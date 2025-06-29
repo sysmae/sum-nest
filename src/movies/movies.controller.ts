@@ -4,10 +4,10 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   Put,
-  Query,
 } from '@nestjs/common';
 import { MoviesService } from './movies.service';
 import { Movie } from './entities/movie.entity';
@@ -24,7 +24,7 @@ export class MoviesController {
   }
 
   @Get(':id')
-  getOne(@Param('id') id: number): Movie {
+  getOne(@Param('id', ParseIntPipe) id: number): Movie {
     return this.moviesService.getOne(id);
   }
 
@@ -34,17 +34,23 @@ export class MoviesController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: number) {
+  remove(@Param('id', ParseIntPipe) id: number) {
     return this.moviesService.deleteOne(id);
   }
 
   @Put(':id')
-  update(@Param('id') id: number, @Body() updateData: UpdateMovieDto) {
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateData: UpdateMovieDto,
+  ) {
     return this.moviesService.update(id, updateData);
   }
 
   @Patch(':id')
-  patch(@Param('id') id: number, @Body() updateData: UpdateMovieDto) {
+  patch(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateData: UpdateMovieDto,
+  ) {
     return this.moviesService.update(id, updateData);
   }
 }

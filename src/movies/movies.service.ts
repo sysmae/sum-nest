@@ -36,10 +36,9 @@ export class MoviesService {
 
   update(id: number, updateData: UpdateMovieDto): Movie {
     const movie = this.getOne(id);
-    this.deleteOne(id); // 기존 영화 삭제
-    const updatedMovie = new Movie();
-    Object.assign(updatedMovie, movie, updateData);
-    this.movies.push(updatedMovie); // 업데이트된 영화 추가
+    const updatedMovie = { ...movie, ...updateData };
+    const movieIndex = this.movies.findIndex((m) => m.id === id);
+    this.movies[movieIndex] = updatedMovie;
     return updatedMovie;
   }
 }

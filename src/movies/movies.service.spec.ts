@@ -97,4 +97,32 @@ describe('MoviesService', () => {
       expect(afterCount).toBeGreaterThan(beforeCount);
     });
   });
+
+  describe('update', () => {
+    it('should update a movie', () => {
+      service.create({
+        title: 'Old Movie',
+        year: 2020,
+        genres: ['Drama'],
+      });
+      const updatedMovie = service.update(1, {
+        title: 'Updated Movie',
+        year: 2023,
+      });
+      expect(updatedMovie.title).toBe('Updated Movie');
+      expect(updatedMovie.year).toBe(2023);
+      expect(updatedMovie.genres).toEqual(['Drama']);
+    });
+
+    it('should throw 404 error when updating non-existent movie', () => {
+      try {
+        service.update(999, { title: 'Non-existent Movie' });
+      } catch (e) {
+        expect(e).toBeInstanceOf(NotFoundException);
+        if (e instanceof NotFoundException) {
+          expect(e.message).toBe('Movie with ID 999 not found.');
+        }
+      }
+    });
+  });
 });
